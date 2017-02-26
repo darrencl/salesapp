@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@drawable/headbar">
+        <Button
+            android:text="&lt;"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click Back" />
+        <TextView
+            android:text="Customer Detail"
+            android:textSize="22dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:layout_weight="11">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Name"
+                    android:textSize="16.0dp"
+                    android:gravity="right"
+                    android:layout_weight="2"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="10dp" />
+                <LinearLayout
+                    android:layout_weight="5"
+                    android:layout_width="0px"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="myName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textColor="#000000"
+                        android:textSize="16.0dp"
+                        android:layout_marginRight="0.0dp"
+                        local:MvxBind="Text Name" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Address"
+                    android:textSize="16.0dp"
+                    android:gravity="right"
+                    android:layout_weight="2"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="10dp" />
+                <LinearLayout
+                    android:layout_weight="5"
+                    android:layout_width="0px"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="myAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textColor="#000000"
+                        android:textSize="16.0dp"
+                        android:layout_marginRight="0.0dp"
+                        local:MvxBind="Text Address" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Phone"
+                    android:textSize="16.0dp"
+                    android:gravity="right"
+                    android:layout_weight="2"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="10dp" />
+                <LinearLayout
+                    android:layout_weight="5"
+                    android:layout_width="0px"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="myPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textColor="#000000"
+                        android:textSize="16.0dp"
+                        android:layout_marginRight="0.0dp"
+                        local:MvxBind="Text Phone" />
+                </LinearLayout>
+            </LinearLayout>
+        <!--  <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:layout_marginTop="30.0dp"
+                android:textSize="24.0dp"
+                android:padding="2.0dp"
+                android:textColor="#000000"
+                android:text="Name"
+                local:MvxBind="Text Name" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:textSize="24.0dp"
+                android:padding="2.0dp"
+                android:textColor="#000000"
+                android:text="Address"
+                local:MvxBind="Text Address" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:textSize="24.0dp"
+                android:padding="2.0dp"
+                android:textColor="#000000"
+                android:text="Phone"
+                local:MvxBind="Text Phone" /> -->
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="4" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

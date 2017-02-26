@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@drawable/headbar">
+        <Button
+            android:text="&lt;"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click Back" />
+        <TextView
+            android:text="Edit Customer"
+            android:textSize="22dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center" />
+        <Button
+            android:text="DONE"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click Done" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:layout_weight="11"
+        android:background="#ffffff">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0.0dp">
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:layout_marginTop="30.0dp"
+                android:textSize="16.0dp"
+                android:padding="8.0dp"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textColorHint="#D3D3D3"
+                android:background="@drawable/custom_textbox"
+                android:hint="Username"
+                local:MvxBind="Text Name" />
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:textSize="16.0dp"
+                android:padding="8.0dp"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textColorHint="#D3D3D3"
+                android:background="@drawable/custom_textbox"
+                android:hint="Address"
+                local:MvxBind="Text Address" />
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:textSize="16.0dp"
+                android:padding="8.0dp"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textColorHint="#D3D3D3"
+                android:inputType="number"
+                android:background="@drawable/custom_textbox"
+                android:hint="Phone"
+                local:MvxBind="Text Phone" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

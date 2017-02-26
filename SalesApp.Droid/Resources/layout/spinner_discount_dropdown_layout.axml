@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextview xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:singleLine="true"
+    android:background="#ffffff"
+    android:foreground="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="12.0dp"
+    android:textColor="#000000"
+    android:ellipsize="marquee"
+    local:MvxBind="Text DiscountType" />

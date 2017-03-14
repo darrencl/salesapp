@@ -31,7 +31,8 @@ namespace SalesApp.Core.Database
 
         public Task<int> DeleteSalesLineWhere(string docNo)
         {
-            var result = database.Execute(string.Format("DELETE FROM SalesLineTable WHERE DocumentNo = "+ docNo));
+            string query = "DELETE FROM SalesLineTable WHERE DocumentNo = '" + docNo+"'";
+            var result = database.Execute(query);
             database.Commit();
             return Task.FromResult(result);
         }

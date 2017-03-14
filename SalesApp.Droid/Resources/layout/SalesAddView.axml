@@ -155,7 +155,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-              <Button
+                <Button
                     android:id="@+id/btnProceed"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                     android:textSize="14.0dp"
                     android:textColor="#ffffff"
                     android:background="@drawable/custom_button" />
-              <!-- local:MvxBind="Click Proceed" /> -->
+            <!-- local:MvxBind="Click Proceed" /> -->
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

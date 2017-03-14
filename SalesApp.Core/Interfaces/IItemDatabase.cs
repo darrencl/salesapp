@@ -12,8 +12,12 @@ namespace SalesApp.Core.Interfaces
     {
         Task<IEnumerable<Item>> GetAllItems();
 
+        Task<Item> GetItemDetail(int itemId);
+
         Task<int> InsertItems(ObservableCollection<Item> newItems);
 
         Task<int> DeleteItem(Item deletedItems);
+
+        Task<int> DeleteAll();
     }
 }

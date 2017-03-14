@@ -20,7 +20,8 @@ namespace SalesApp.Core.Services
         public async Task<int> checkLogin(string username, string password)
         {
             int result = 0;
-            WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.loginEndpoint + username + "/" + password);
+            var uri = ServerDatabaseApi.loginEndpoint + username + "/" + password;
+            WebRequest request = WebRequest.CreateHttp(uri);
             string responseValue = null;
             try
             {
@@ -61,7 +62,46 @@ namespace SalesApp.Core.Services
                 else return 3;
             }
         }
-
+        public async Task<string> getNextShipmentId(string docno)
+        {
+            WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getNextShipmentIdEndpoint+docno);
+            string responseValue = null;
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                responseValue = await reader.ReadToEndAsync();
+                            }
+                        }
+                    }
+                }
+                string sresponse = "";
+                try
+                {
+                    sresponse = JsonConvert.DeserializeObject<string>(responseValue);
+                }
+                catch (Exception ex)
+                {
+                    sresponse = responseValue;
+                }
+                if (sresponse != null)
+                {
+                    return sresponse;
+                }
+                else
+                    return null;
+            }
+            catch (WebException we)
+            {
+                return null;
+            }
+        }
         public async Task<Models.Salesman> getDetail(string username)
         {
             WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getDetailEndpoint + username);
@@ -148,7 +188,38 @@ namespace SalesApp.Core.Services
                 return null;
             }
         }
-
+        public async Task<ObservableCollection<Models.Promotion>> getAllPromotions()
+        {
+            WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getPromotionEndpoint);
+            string responseValue = null;
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                responseValue = await reader.ReadToEndAsync();
+                            }
+                        }
+                    }
+                }
+                var sresponse = JsonConvert.DeserializeObject<ObservableCollection<Models.Promotion>>(responseValue);
+                if (sresponse != null)
+                {
+                    return sresponse;
+                }
+                else
+                    return null;
+            }
+            catch (WebException we)
+            {
+                return null;
+            }
+        }
         public async Task<ObservableCollection<Models.SalesTable>> getMySales(string salesmanId)
         {
             WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getMySalesEndpoint + salesmanId);
@@ -227,6 +298,55 @@ namespace SalesApp.Core.Services
                 return 0;
             }
         }
+
+        public async Task<int> insertShipment(ObservableCollection<Models.ShipmentLog> newshipment)
+        {
+
+            var ipAddress = ServerDatabaseApi.ipAddress;// your IP address here
+            var port = ServerDatabaseApi.port; // your port here
+            var endpoint = $"http://{ipAddress}:{port}/insertshipment";
+            var requestString = JsonConvert.SerializeObject(newshipment, Formatting.Indented);
+            var content = new StringContent(requestString, Encoding.UTF8, "application/json");
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var reponse = await client.PostAsync(endpoint, content);
+                    if (reponse.IsSuccessStatusCode)
+                        return 1;
+                    else
+                        return 0;
+                }
+            }
+            catch (WebException we)
+            {
+                return 0;
+            }
+        }
+        public async Task<int> insertShipmentLines(ObservableCollection<Models.ShipmentLine> newitems)
+        {
+            var ipAddress = ServerDatabaseApi.ipAddress;// your IP address here
+            var port = ServerDatabaseApi.port; // your port here
+            var endpoint = $"http://{ipAddress}:{port}/insertshipmentline";
+            var requestString = JsonConvert.SerializeObject(newitems, Formatting.Indented);
+            var content = new StringContent(requestString, Encoding.UTF8, "application/json");
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var reponse = await client.PostAsync(endpoint, content);
+                    if (reponse.IsSuccessStatusCode)
+                        return 1;
+                    else
+                        return 0;
+                }
+            }
+            catch (WebException we)
+            {
+                return 0;
+            }
+        }
+
         public async Task<ObservableCollection<Models.Item>> getAllItems()
         {
             WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getAllItemsEndpoint);
@@ -263,6 +383,70 @@ namespace SalesApp.Core.Services
         public async Task<ObservableCollection<Models.SalesLineTable>> getMySalesLines(string salesmanId)
         {
             WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getSalesLinesEndpoint + salesmanId);
+            string responseValue = null;
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                responseValue = await reader.ReadToEndAsync();
+                            }
+                        }
+                    }
+                }
+                var sresponse = JsonConvert.DeserializeObject<ObservableCollection<Models.SalesLineTable>>(responseValue);
+                if (sresponse != null)
+                {
+                    return sresponse;
+                }
+                else
+                    return null;
+            }
+            catch (WebException we)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ObservableCollection<Models.SalesTable>> getAllSales()
+        {
+            WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getAllSalesEndpoint);
+            string responseValue = null;
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                responseValue = await reader.ReadToEndAsync();
+                            }
+                        }
+                    }
+                }
+                var sresponse = JsonConvert.DeserializeObject<ObservableCollection<Models.SalesTable>>(responseValue);
+                if (sresponse != null)
+                {
+                    return sresponse;
+                }
+                else return null;
+            }
+            catch (WebException we)
+            {
+                return null;
+            }
+        }
+        public async Task<ObservableCollection<Models.SalesLineTable>> getAllSalesLines()
+        {
+            WebRequest request = WebRequest.CreateHttp(ServerDatabaseApi.getAllSalesLinesEndpoint);
             string responseValue = null;
             try
             {

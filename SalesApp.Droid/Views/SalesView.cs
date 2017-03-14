@@ -8,6 +8,11 @@ using SalesApp.Core.ViewModels;
 using Android.Widget;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Util;
+using SalesApp.Core.Services;
+using Firebase.Messaging;
+//using Firebase.Iid;
+//using Firebase.Messaging;
 
 namespace SalesApp.Droid.Views
 {
@@ -15,6 +20,7 @@ namespace SalesApp.Droid.Views
     public class SalesView :MvxActivity
     {
         SalesViewModel vm;
+        private bool isResuming = false;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -22,6 +28,20 @@ namespace SalesApp.Droid.Views
             vm = ViewModel as SalesViewModel;
             ActionBar.Hide();
 
+            //GCM TEST
+            /*Log.Debug("SalesView", "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+            if (Intent.Extras != null)
+            {
+                foreach (var key in Intent.Extras.KeySet())
+                {
+                    var value = Intent.Extras.GetString(key);
+                    Log.Debug("SalesView", "Key: {0} Value: {1}", key, value);
+                    Log.Debug("SalesView", "google app id: " + Resource.String.google_app_id);
+                }
+            }
+            FirebaseMessaging.Instance.SubscribeToTopic("promotion");
+            Log.Debug("SalesView", "Subscribed to remote notification");*/
+            //GCM TEST END
             ImageView syncButton = FindViewById<ImageView>(Resource.Id.btnSync);
             syncButton.Click += delegate
             {
@@ -29,15 +49,27 @@ namespace SalesApp.Droid.Views
                 new Thread(new ThreadStart(async delegate
                {
                    await vm.CmdSync();
+                   vm.refresh();
                    RunOnUiThread(() => progressDialog.Dismiss());
                })).Start();
             };
         }
-        protected override void OnResume()
+        protected override async void OnResume()
         {
             base.OnResume();
-            vm.loadSales();
-            vm.refresh();
+            if (!isResuming)
+            {
+                isResuming = true;
+                await vm.loadSales();
+                vm.refresh();
+                isResuming = false;
+            }
+        }
+        protected override void OnStop()
+        {
+            base.OnStop();
+            if (GlobalVars.isLoggedOut)
+                FirebaseMessaging.Instance.UnsubscribeFromTopic("promotion");
         }
     }
 }

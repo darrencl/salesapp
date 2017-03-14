@@ -20,6 +20,8 @@ namespace SalesApp.Core.Interfaces
 
         Task<int> DeleteCustomer(Customer customer);
 
+        Task<int> DeleteAll();
+
         Task<int> Count();
     }
 }

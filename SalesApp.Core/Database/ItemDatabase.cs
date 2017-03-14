@@ -34,9 +34,20 @@ namespace SalesApp.Core.Database
             return Task.FromResult<IEnumerable<Item>>(database.Table<Item>().ToList());
         }
 
+        public Task<Item> GetItemDetail(int itemId)
+        {
+            return Task.FromResult<Item>(database.Table<Item>().Where(x => x.ItemId == itemId).FirstOrDefault());
+        }
+
         public Task<int> InsertItems(ObservableCollection<Item> newItems)
         {
             var num = database.InsertAll(newItems);
+            database.Commit();
+            return Task.FromResult(num);
+        }
+        public Task<int> DeleteAll()
+        {
+            var num = database.DeleteAll<Item>();
             database.Commit();
             return Task.FromResult(num);
         }

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@drawable/headbar">
+        <Button
+            android:text="&lt;"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click Back" />
+        <TextView
+            android:text="Update Sales"
+            android:textSize="22dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center" />
+        <Button
+            android:layout_weight="1"
+            android:text="+"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click AddItem" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:layout_weight="11"
+        android:background="#ffffff">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="Document #"
+                android:textColor="#000000"
+                android:layout_marginTop="15.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="06022017001"
+                android:textColor="#000000"
+                android:layout_marginTop="15.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp"
+                local:MvxBind="Text ThisDocumentNumber;" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="at"
+                android:textColor="#000000"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="DD/MM/YYYY HH:MM:SS AM"
+                android:textColor="#000000"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp"
+                local:MvxBind="Text ThisDateCreated;" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14.0dp"
+            android:textColor="#000000"
+            android:layout_marginBottom="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:text="Darren"
+            local:MvxBind="Text CustomerName" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14.0dp"
+            android:textColor="#A9A9A9"
+            android:layout_marginBottom="15.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:text="Jalan ...."
+            local:MvxBind="Text CustomerAddress" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30.0dp"
+            android:layout_marginTop="5.0dp">
+            <MvxListView
+                android:layout_height="0.0dp"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:divider="#BCBCBC"
+                android:dividerHeight="1dp"
+                local:MvxItemTemplate="@layout/table_sales_detail_layout"
+                local:MvxBind="ItemsSource UpdateSalesItemsList; ItemLongClick RemoveItem; ItemClick UpdateItem;" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginRight="15.0dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25.0dp"
+                    android:text="Discount Rp. "
+                    android:textColor="#000000"
+                    android:gravity="right"
+                    android:textSize="16.0dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#000000"
+                    android:gravity="right"
+                    android:textSize="16.0dp"
+                    local:MvxBind="Text TotalDiscountAmount;" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginRight="15.0dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25.0dp"
+                    android:text="Total Rp."
+                    android:textColor="#000000"
+                    android:gravity="right"
+                    android:textSize="18.0dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#000000"
+                    android:gravity="right"
+                    android:textSize="18.0dp"
+                    android:textStyle="bold"
+                    local:MvxBind="Text Total;" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15.0dp"
+                android:layout_marginRight="15.0dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/btnUpdate"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="UPDATE"
+                    android:textSize="14.0dp"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/custom_button" />
+            <!-- local:MvxBind="Click Proceed" /> -->
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

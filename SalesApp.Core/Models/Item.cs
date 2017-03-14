@@ -15,13 +15,15 @@ namespace SalesApp.Core.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public string UnitMeasurement { get; set; }
+        public string Barcode { get; set; }
         public Item() { }
-        public Item(int id, string name, double price, string unitMeasurement)
+        public Item(int id, string name, double price, string unitMeasurement, string barcode)
         {
             ItemId = id;
             Name = name;
             Price = price;
             UnitMeasurement = unitMeasurement;
+            Barcode = barcode;
         }
         public override bool Equals(object obj)
         {

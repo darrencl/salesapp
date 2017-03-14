@@ -34,20 +34,20 @@
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:gravity="center_vertical|center" />
-      <ImageView
-          android:id="@+id/btnSyncCustomer"
-          android:layout_weight="1"
-          android:clickable="true"
-          android:layout_width="30dp"
-          android:layout_height="fill_parent"
-          android:layout_gravity="center_vertical"
-          android:layout_marginTop="18dp"
-          android:layout_marginBottom="18dp"
-          android:layout_marginRight="60.0dp"
-          android:background="@android:color/transparent"
-          android:src="@drawable/refresh_button"
-          android:layout_alignParentRight="true"/>
-      <!-- local:MvxBind="Click SyncCommand" /> -->
+        <ImageView
+            android:id="@+id/btnSyncCustomer"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:layout_width="30dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="60.0dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/refresh_button"
+            android:layout_alignParentRight="true" />
+    <!-- local:MvxBind="Click SyncCommand" /> -->
         <Button
             android:layout_weight="1"
             android:text="+"
@@ -67,7 +67,6 @@
         android:layout_weight="10"
         android:background="#ffffff">
         <Mvx.MvxListView
-            android:id="@+id/salesList"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             local:MvxItemTemplate="@layout/table_customer_layout"
@@ -93,6 +92,16 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:background="@drawable/navbar">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/btnPromotion"
+            android:layout_weight="1"
+            android:src="@drawable/Promotion"
+            android:background="#80ffffff"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            local:MvxBind="Click navPromo" />
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

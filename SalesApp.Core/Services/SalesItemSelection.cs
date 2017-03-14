@@ -14,17 +14,19 @@ namespace SalesApp.Core.Services
         public double Price { get; set; }
         public string UnitMeasurement { get; set; }
         public string PriceString { get { return string.Format("{0:n0}", Price); } }
+        public string Barcode { get; set; }
         public bool isSelected { get; set; }
 
         public SalesItemSelection()
         { }
 
-        public SalesItemSelection(int itemid, string name, double price, string um)
+        public SalesItemSelection(int itemid, string name, double price, string um, string barcode)
         {
             ItemId = itemid;
             Name = name;
             Price = price;
             UnitMeasurement = um;
+            Barcode = barcode;
             isSelected = false;
         }
         public void Selected()

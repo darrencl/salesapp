@@ -28,12 +28,14 @@ namespace SalesApp.Core.Models
         public string SalesmanId { get; set; }
         [JsonProperty("CustomerId")]
         public string CustomerId { get; set; }
+        [JsonProperty("isGPSEnabled")]
+        public int isGPSEnabled { get; set; }
         [JsonIgnore]
         public bool isTransferred { get; set; }
         
 
         public SalesTable() { isTransferred = false; }
-        public SalesTable(string DocNo, DateTime dateCreated, string location, double latitude, double longitude, double totaldiscamount, double total, string salesmanid, string customerid)
+        public SalesTable(string DocNo, DateTime dateCreated, string location, double latitude, double longitude, double totaldiscamount, double total, string salesmanid, string customerid, int isgpsenabled)
         {
             DocumentNo = DocNo;
             DateCreated = dateCreated;
@@ -45,6 +47,7 @@ namespace SalesApp.Core.Models
             SalesmanId = salesmanid;
             CustomerId = customerid;
             isTransferred = false;
+            isGPSEnabled = isgpsenabled;
         }
         public void Transferred()
         {
@@ -70,6 +73,11 @@ namespace SalesApp.Core.Models
             if (Object.ReferenceEquals(other, null)) return false;
             if (Object.ReferenceEquals(this, other)) return true;
             return DocumentNo == other.DocumentNo && SalesmanId == other.SalesmanId && CustomerId == other.CustomerId;
+        }
+
+        public override string ToString()
+        {
+            return DocumentNo;
         }
     }
 }

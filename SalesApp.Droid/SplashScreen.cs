@@ -5,7 +5,7 @@ using MvvmCross.Droid.Views;
 namespace SalesApp.Droid
 {
     [Activity(
-        Label = "SalesApp"
+        Label = "Dynamics"
         , MainLauncher = true
         , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"

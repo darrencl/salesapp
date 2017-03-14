@@ -10,6 +10,8 @@ namespace SalesApp.Core.Interfaces
 {
     public interface ISalesDatabase
     {
+        Task<ObservableCollection<SalesTable>> GetAllSales();
+
         Task<IEnumerable<SalesTable>> GetAllSalesWhere(string salesmanId);
 
         Task<IEnumerable<SalesTable>> GetNotTransferredSales();
@@ -25,6 +27,8 @@ namespace SalesApp.Core.Interfaces
         Task<int> UpdateTransferred(string docno);
 
         Task<int> UpdateAllTransferred();
+
+        Task<int> Update(SalesTable salesData);
 
         Task<int> DeleteAll();
     }

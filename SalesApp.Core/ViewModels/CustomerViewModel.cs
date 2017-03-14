@@ -65,6 +65,10 @@ namespace SalesApp.Core.ViewModels
         {
             get { return new MvxCommand(() => { ShowViewModel<SalesViewModel>(); Close(this); }); }
         }
+        public IMvxCommand navPromo
+        {
+            get { return new MvxCommand(() => { ShowViewModel<PromotionViewModel>(); Close(this); }); }
+        }
         public IMvxCommand AddCustomer
         {
             get { return new MvxCommand(() => ShowViewModel<CustomerAddViewModel>()); }
@@ -77,7 +81,10 @@ namespace SalesApp.Core.ViewModels
                 {
                     if (await dialog.Show("Are you sure you want to logout?", "Logout", "Yes", "No"))
                     {
-                        ISharedPreferences mysettings = Application.Context.GetSharedPreferences("mysetting", FileCreationMode.Private);
+                        GlobalVars.isLoggedOut = true;
+                        var mySales = await salesDb.GetAllSalesWhere(GlobalVars.myDetail.SalesmanId);
+                        DateTime timeNow = DateTime.Now;
+                        ISharedPreferences mysettings = Application.Context.GetSharedPreferences("mysetting", FileCreationMode.Private); List<Models.SalesTable> mySalesToList = mySales.ToList().Where(x => ((timeNow.Year - x.DateCreated.Year) * 12 + timeNow.Month - x.DateCreated.Month) > mysettings.GetInt("deleteOffset", 6)).ToList();
                         ISharedPreferencesEditor editor = mysettings.Edit();
                         editor.PutBoolean("isLoggedIn", false);
                         editor.Remove("id");
@@ -86,8 +93,13 @@ namespace SalesApp.Core.ViewModels
                         editor.Remove("phone");
                         editor.Remove("username");
                         editor.Apply();
-                        await salesLineDb.DeleteAll();
-                        await salesDb.DeleteAll();
+                        foreach (Models.SalesTable data in mySalesToList)
+                        {
+                            await salesLineDb.DeleteSalesLineWhere(data.DocumentNo);
+                            await salesDb.DeleteSales(data);
+                        }
+                        //await salesLineDb.DeleteAll();
+                        //await salesDb.DeleteAll();
                         GlobalVars.myDetail = null;
                         ShowViewModel<LoginViewModel>();
                         Close(this);
@@ -135,10 +147,7 @@ namespace SalesApp.Core.ViewModels
                 if (newData != null)
                 {
                     //insert new data to local db
-                    foreach (Models.Customer data in newData)
-                    {
-                        await customerDb.InsertCustomer(data);
-                    }
+                    await customerDb.InsertAllCustomers(new ObservableCollection<Models.Customer>(newData));
                 }
                 if (deletedData != null)
                 {

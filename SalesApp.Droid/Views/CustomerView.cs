@@ -6,6 +6,8 @@ using Android.Support.V7.App;
 using Android.Widget;
 using SalesApp.Core.ViewModels;
 using System.Threading;
+using SalesApp.Core.Services;
+using Firebase.Messaging;
 
 namespace SalesApp.Droid.Views
 {
@@ -30,6 +32,12 @@ namespace SalesApp.Droid.Views
                     RunOnUiThread(() => progressDialog.Dismiss());
                 })).Start();
             };
+        }
+        protected override void OnStop()
+        {
+            base.OnStop();
+            if (GlobalVars.isLoggedOut)
+                FirebaseMessaging.Instance.UnsubscribeFromTopic("promotion");
         }
     }
 }

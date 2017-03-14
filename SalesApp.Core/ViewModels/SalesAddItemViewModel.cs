@@ -166,7 +166,12 @@ namespace SalesApp.Core.ViewModels
                     //check total < 0
                     if (TotalItemCost >= 0 && !string.IsNullOrEmpty(DiscAmount) && !string.IsNullOrEmpty(DiscPercent) && Quantity > 0)
                     {
-                        GlobalVars.insertSalesItemsList.Add(new SalesItem(GlobalVars.insertSalesItemsList.Count() + 1, "", SelectedItem.ItemId, 
+                        int lineNumber;
+                        if (GlobalVars.insertSalesItemsList.Count == 0)
+                            lineNumber = 1;
+                        else
+                            lineNumber = GlobalVars.insertSalesItemsList.Select(x => x.LineNumber).Max();
+                        GlobalVars.insertSalesItemsList.Add(new SalesItem(lineNumber, "", SelectedItem.ItemId, 
                             SelectedItem.Name, SelectedItem.Price, Quantity, SelectedItem.UnitMeasurement, double.Parse(DiscAmount), double.Parse(discPercent)));
                         Close(this);
                     }
@@ -216,7 +221,7 @@ namespace SalesApp.Core.ViewModels
 
                 if (result != null)
                 {
-                    var selectedItem = ItemCatalogue.Where(x => x.ItemId.ToString() == result.Text).FirstOrDefault();
+                    var selectedItem = ItemCatalogue.Where(x => x.Barcode == result.Text).FirstOrDefault();
                     if (selectedItem != null)
                     {
                         selectedItem.Selected();
@@ -285,7 +290,7 @@ namespace SalesApp.Core.ViewModels
                     
                     foreach (Models.Item data in temp)
                     {
-                        ItemCatalogueTemp.Add(new SalesItemSelection(data.ItemId, data.Name, data.Price, data.UnitMeasurement));
+                        ItemCatalogueTemp.Add(new SalesItemSelection(data.ItemId, data.Name, data.Price, data.UnitMeasurement, data.Barcode));
                     }
                     ItemCatalogue = ItemCatalogueTemp;
                 }
@@ -301,7 +306,7 @@ namespace SalesApp.Core.ViewModels
             Models.Item temp;
             foreach (SalesItemSelection item in ItemCatalogue)
             {
-                temp = new Models.Item(item.ItemId, item.Name, item.Price, item.UnitMeasurement);
+                temp = new Models.Item(item.ItemId, item.Name, item.Price, item.UnitMeasurement, item.Barcode);
                 itemList.Add(temp);
             }
             var fetchedItem = await serverDb.getAllItems();

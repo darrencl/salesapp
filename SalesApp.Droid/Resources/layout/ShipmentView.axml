@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@drawable/headbar">
+        <Button
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:clickable="true"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/transparent"
+            android:text="Logout"
+            android:textColor="#ffffff"
+            android:textSize="14.0dp"
+            android:layout_alignParentLeft="true"
+            local:MvxBind="Click Logout" />
+        <TextView
+            android:text="Sales Order"
+            android:textSize="22dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center" />
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_weight="1"
+            android:text="&gt;"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:textColor="@drawable/textbutton" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        android:layout_weight="11"
+        android:background="#ffffff">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="41.0dp"
+            android:layout_marginLeft="10.0dp"
+            android:layout_marginRight="10.0dp"
+            android:layout_marginTop="20.0dp">
+          <MvxAutoCompleteTextView
+              android:layout_height="match_parent"
+              android:layout_width="fill_parent"
+              android:layout_gravity="center"
+              android:gravity="left|center_vertical"
+              android:padding="8.0dp"
+              android:background="@drawable/custom_textbox"
+              android:popupBackground="#ffffff"
+              android:completionThreshold="1"
+              android:singleLine="true"
+              android:inputType="number"
+              android:digits="0123456789"
+              android:textColor="#000000"
+              android:divider="#BCBCBC"
+              android:dividerHeight="1dp"
+              android:hint="Enter document number..."
+              local:MvxItemTemplate="@drawable/custom_autocomplete_dropdown"
+              android:textSize="14.0dp"
+              local:MvxBind="ItemsSource AutoCompleteSuggestions; PartialText SalesSearchTerm; SelectedObject SelectedObj;"/>
+            <!--<MvxSpinner
+                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:spinnerMode="dropdown"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="2.0dp"
+                android:background="@drawable/custom_textbox"
+                local:MvxBind="ItemsSource SalesList; SelectedItem SelectedSales;"
+                local:MvxItemTemplate="@layout/spinner_select_sales"
+                local:MvxDropDownItemTemplate="@layout/spinner_select_sales_dropdown" />
+                -->
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="Document #"
+                android:textColor="#000000"
+                android:layout_marginTop="15.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.0dp"
+                android:text="06022017001"
+                android:textColor="#000000"
+                android:layout_marginTop="15.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:layout_marginLeft="5.0dp"
+                local:MvxBind="Text ThisDocumentNumber;" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14.0dp"
+            android:textColor="#000000"
+            android:layout_marginBottom="5.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:text="Darren"
+            local:MvxBind="Text CustomerName" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14.0dp"
+            android:textColor="#A9A9A9"
+            android:layout_marginBottom="15.0dp"
+            android:layout_marginLeft="5.0dp"
+            android:text="Jalan ...."
+            local:MvxBind="Text CustomerAddress" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40.0dp"
+            android:layout_marginRight="40.0dp">
+            <Button
+                android:layout_height="30.0dp"
+                android:layout_width="fill_parent"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginBottom="10.0dp"
+                android:text="Scan a Barcode"
+                android:textSize="12.0dp"
+                android:textColor="#ffffff"
+                android:background="@drawable/custom_button"
+                local:MvxBind="Click BarcodeScan" />
+        </LinearLayout>
+        <Mvx.MvxListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            local:MvxItemTemplate="@layout/table_shipment_item_layout"
+            android:divider="#BCBCBC"
+            android:dividerHeight="1dp"
+            local:MvxBind="ItemsSource ScannedItems; ItemLongClick RemoveItemCommand;" />
+    </LinearLayout>
+</LinearLayout>

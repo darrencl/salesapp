@@ -25,6 +25,18 @@ namespace SalesApp.Core.ViewModels
             get { return GlobalVars.selectedSales.DocumentNo; }
             set { GlobalVars.selectedSales.DocumentNo = value; RaisePropertyChanged(() => ThisDocumentNumber); }
         }
+        public string ThisDateCreated
+        {
+            get { return GlobalVars.selectedSales.DateString; }
+        }
+        public string CustomerName
+        {
+            get { return GlobalVars.selectedSales.CustomerName; }
+        }
+        public string CustomerAddress
+        {
+            get { return GlobalVars.selectedSales.CustomerAddress; }
+        }
         public string Total
         {
             get { return GlobalVars.selectedSales.TotalString; }

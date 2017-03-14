@@ -19,6 +19,7 @@ namespace SalesApp.Core.Services
         public string UnitMeasurement { get; set; }
         public double DiscountAmount { get; set; }
         public double DiscountPercentage { get; set; }
+        public double DiscountPercentageDisplay { get { return Math.Round(DiscountPercentage, 2); } }
         public string ItemPriceTotalString { get { return string.Format("{0:n0}", (ActualPrice*Quantity-DiscountAmount)); } }
         public string DiscountAmountString { get { return string.Format("{0:n0}", (DiscountAmount)); } }
 
@@ -34,6 +35,15 @@ namespace SalesApp.Core.Services
             UnitMeasurement = unitmeasurement;
             DiscountAmount = discamount;
             DiscountPercentage = discpercent;
+        }
+        public void refresh()
+        {
+            RaisePropertyChanged(() => Quantity);
+            RaisePropertyChanged(() => DiscountAmount);
+            RaisePropertyChanged(() => DiscountPercentage);
+            RaisePropertyChanged(() => DiscountAmountString);
+            RaisePropertyChanged(() => DiscountPercentageDisplay);
+            RaisePropertyChanged(() => ItemPriceTotalString);
         }
     }
 }

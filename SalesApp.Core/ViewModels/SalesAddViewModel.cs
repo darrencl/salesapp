@@ -101,23 +101,46 @@ namespace SalesApp.Core.ViewModels
         public async Task ProceedCommand()
         {
                 //check: if location is avalable, then proceed, if cannot get device location, can't proceed
-                try
+            try
+            {
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 50;
+                Plugin.Geolocator.Abstractions.Position position;
+                string address;
+                int isGpsEnabled;
+                if (locator.IsGeolocationEnabled)
                 {
-                    var locator = CrossGeolocator.Current;
-                    locator.DesiredAccuracy = 50;
-
-                    var position = await locator.GetPositionAsync(10000);
-                    var address = await geocoder.GetCityFromLocation(new GeoLocation(position.Latitude, position.Longitude));
-                    //insert sales here
-                    insertSales(position,address);
-                    SelectedCustomer = null;
-                    InsertSalesItemsList.Clear();
-                    Close(this);
+                    isGpsEnabled = 1;
+                    try
+                    {
+                        position = await locator.GetPositionAsync(10000);
+                        address = await geocoder.GetCityFromLocation(new GeoLocation(position.Latitude, position.Longitude));
+                    }
+                    catch (Exception ex)
+                    {
+                        address = "Unknown";
+                        position = new Plugin.Geolocator.Abstractions.Position();
+                        position.Latitude = 0;
+                        position.Longitude = 0;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    await dialog.Show("Cannot get location at this moment. Please ensure the GPS is turned on and try again.", "Location not available");
+                    isGpsEnabled = 0;
+                    address = "Unknown";
+                    position = new Plugin.Geolocator.Abstractions.Position();
+                    position.Latitude = 0;
+                    position.Longitude = 0;
                 }
+                //insert sales here
+                await insertSales(position,address, isGpsEnabled);
+                SelectedCustomer = null;
+                InsertSalesItemsList.Clear();
+                Close(this);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public SalesAddViewModel(ISalesDatabase isd, ICustomerDatabase icd, ISalesLineDatabase isld, IDialogService ids, IGeoCoder geocoder)
@@ -156,18 +179,20 @@ namespace SalesApp.Core.ViewModels
             GlobalVars.customerListIsLoaded = true;
             RaisePropertyChanged(() => CustomerSelection);
         }
-        public async void insertSales(Plugin.Geolocator.Abstractions.Position position, string address)
+        public async Task insertSales(Plugin.Geolocator.Abstractions.Position position, string address, int isGPSEnabled)
         {
             string date = (DateTime.Now.AddHours(7).Day.ToString().Length == 1? "0" + DateTime.Now.AddHours(7).Day.ToString() : DateTime.Now.AddHours(7).Day.ToString()) + (DateTime.Now.AddHours(7).Month.ToString().Length == 1 ? "0"+ DateTime.Now.AddHours(7).Month.ToString() : DateTime.Now.AddHours(7).Month.ToString()) + DateTime.Now.AddHours(7).Year.ToString();
             var newid = await salesDb.GetNextId(GlobalVars.myDetail.SalesmanId+date);
-            var result = await salesDb.InsertSales(new SalesTable(newid, DateTime.Now.AddHours(7), address, position.Latitude, position.Longitude, totalDiscountAmount, total, GlobalVars.myDetail.SalesmanId, SelectedCustomer.CustomerId));
+            var result = await salesDb.InsertSales(new SalesTable(newid, DateTime.Now.AddHours(7), address, position.Latitude, position.Longitude, totalDiscountAmount, total, GlobalVars.myDetail.SalesmanId, SelectedCustomer.CustomerId, isGPSEnabled));
             if (result == 1)
             {
                 //insert saleslines to local
                 ObservableCollection<SalesLineTable> SalesLineTableInsert = new ObservableCollection<SalesLineTable>();
+                int lineNumberCounter = 1;
                 foreach (SalesItem itemdata in InsertSalesItemsList)
                 {
-                    SalesLineTableInsert.Add(new SalesLineTable(itemdata.LineNumber, newid, itemdata.ItemId, itemdata.ItemName, itemdata.ActualPrice, itemdata.Quantity, itemdata.UnitMeasurement, itemdata.DiscountAmount, itemdata.DiscountPercentage));
+                    SalesLineTableInsert.Add(new SalesLineTable(lineNumberCounter, newid, itemdata.ItemId, itemdata.ItemName, itemdata.ActualPrice, itemdata.Quantity, itemdata.UnitMeasurement, itemdata.DiscountAmount, itemdata.DiscountPercentage));
+                    lineNumberCounter++;
                 }
                 var sltresult = await salesLineDb.InsertSalesLines(SalesLineTableInsert);
                 if (result != 1)

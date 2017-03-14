@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="salesapp.droid" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+  <!--suppress UsesMinSdkAttributes-->
+  <uses-sdk android:minSdkVersion="16" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.SEND_SMS" />
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-feature android:name="android.hardware.camera.autofocus" />
+  <application android:label="Dynamics" android:icon="@drawable/icon" android:debuggable="false" android:name="android.app.Application" android:allowBackup="true">
+    <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
+    <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <category android:name="salesapp.droid" />
+      </intent-filter>
+    </receiver>
+    <activity android:icon="@drawable/icon" android:label="Dynamics" android:noHistory="true" android:screenOrientation="portrait" android:theme="@style/Theme.Splash" android:name="md5ab4a30b40c58d2d434984a96baae0c67.SplashScreen">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:label="Add New Customer" android:name="md55ef96e67ea73d6330309a300066675ce.CustomerAddView" />
+    <activity android:label="Customer Detail" android:name="md55ef96e67ea73d6330309a300066675ce.CustomerDetailView" />
+    <activity android:label="Customer List" android:name="md55ef96e67ea73d6330309a300066675ce.CustomerView" />
+    <activity android:label="Login" android:name="md55ef96e67ea73d6330309a300066675ce.LoginView" />
+    <activity android:label="Promotion Detail" android:name="md55ef96e67ea73d6330309a300066675ce.PromotionDetailView" />
+    <activity android:label="Promotion List" android:name="md55ef96e67ea73d6330309a300066675ce.PromotionView" />
+    <activity android:label="Add Item" android:name="md55ef96e67ea73d6330309a300066675ce.SalesAddItemView" />
+    <activity android:label="New Sales" android:name="md55ef96e67ea73d6330309a300066675ce.SalesAddView" />
+    <activity android:label="Sales Detail" android:name="md55ef96e67ea73d6330309a300066675ce.SalesDetailView" />
+    <activity android:label="Add/Update Item" android:name="md55ef96e67ea73d6330309a300066675ce.SalesUpdateAddItemView" />
+    <activity android:label="Sales Update" android:name="md55ef96e67ea73d6330309a300066675ce.SalesUpdateView" />
+    <activity android:label="Sales List" android:name="md55ef96e67ea73d6330309a300066675ce.SalesView" />
+    <activity android:label="Shipment View" android:name="md55ef96e67ea73d6330309a300066675ce.ShipmentView" />
+    <receiver android:exported="true" android:name="md55ef96e67ea73d6330309a300066675ce.SMSSentReceiver" />
+    <receiver android:exported="true" android:name="md55ef96e67ea73d6330309a300066675ce.SMSDeliveredReceiver" />
+    <service android:name="md59f5c263ea5821388286220ee54ea6022.MyFirebaseIIDService">
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+      </intent-filter>
+    </service>
+    <service android:name="md59f5c263ea5821388286220ee54ea6022.MyFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+    <receiver android:enabled="true" android:label="Connectivity Plugin Broadcast Receiver" android:name="md531e46b185997765898cde66852db2a40.ConnectivityChangeBroadcastReceiver" />
+    <activity android:configChanges="keyboardHidden|orientation|screenLayout" android:label="Scanner" android:name="md55109d95aac470e32f9a4031a908f0227.ZxingActivity" />
+    <provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="2147483647" android:authorities="salesapp.droid.mono.MonoRuntimeProvider.__mono_init__" />
+    <provider android:authorities="salesapp.droid.firebaseinitprovider" android:name="com.google.firebase.provider.FirebaseInitProvider" android:exported="false" android:initOrder="100" />
+    <!-- FirebaseMessagingService performs security checks at runtime,
+             no need for explicit permissions despite exported="true" -->
+    <service android:name="com.google.firebase.messaging.FirebaseMessagingService" android:exported="true">
+      <intent-filter android:priority="-500">
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+    <activity android:name="com.google.android.gms.common.api.GoogleApiActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:exported="false" />
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+  </application>
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+</manifest>

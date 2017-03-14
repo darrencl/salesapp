@@ -8,22 +8,31 @@ namespace SalesApp.Core.Services
 {
     public class ServerDatabaseApi
     {
-        public static string ipAddress = "192.168.0.102";
-        public static string port = "3000";
-        public static string WebServiceAddress = "http://" + ipAddress + ":" + port + "/";
+        public static string myip;
+        public static string ipAddress { get { return myip; } }
+        public static string port { get { return "3000"; } }
+        public static string WebServiceAddress {get { return "http://" + ipAddress + ":" + port + "/"; } }
 
-        public static string loginEndpoint = WebServiceAddress + "login/";
-        public static string getDetailEndpoint = WebServiceAddress + "mydetail/";
+        public static string loginEndpoint { get { return WebServiceAddress + "login/"; } }
+        public static string getDetailEndpoint { get { return WebServiceAddress + "mydetail/"; } }
 
-        public static string insertCustomerEndpoint = WebServiceAddress + "insertcustomer/";
-        public static string getAllCustomersEndpoint = WebServiceAddress + "customers";
+        public static string getAllSalesEndpoint { get { return WebServiceAddress + "sales"; } }
+        public static string getAllSalesLinesEndpoint { get { return WebServiceAddress + "saleslines"; } }
 
-        public static string getAllItemsEndpoint = WebServiceAddress + "items";
+        public static string insertCustomerEndpoint { get { return WebServiceAddress + "insertcustomer/"; } }
+        public static string getAllCustomersEndpoint { get { return WebServiceAddress + "customers"; } }
 
-        public static string getMySalesEndpoint = WebServiceAddress + "sales/";
-        public static string insertSalesEndpoint = WebServiceAddress + "insertsales";
+        public static string getAllItemsEndpoint { get { return WebServiceAddress + "items"; } }
 
-        public static string getSalesLinesEndpoint = WebServiceAddress + "saleslines/";
-        public static string insertSalesLinesEndpoint = WebServiceAddress + "insertsalesline";
+        public static string getMySalesEndpoint { get { return WebServiceAddress + "sales/"; } }
+        public static string insertSalesEndpoint { get { return WebServiceAddress + "insertsales"; } }
+
+        public static string getSalesLinesEndpoint { get { return WebServiceAddress + "saleslines/"; } }
+        public static string insertSalesLinesEndpoint { get { return WebServiceAddress + "insertsalesline"; } }
+
+        public static string getPromotionEndpoint { get { return WebServiceAddress + "promotion/"; } }
+        public static string getImageEndpoint { get { return WebServiceAddress + "images/"; } }
+
+        public static string getNextShipmentIdEndpoint { get { return WebServiceAddress + "nextshipmentid/"; } }
     }
 }

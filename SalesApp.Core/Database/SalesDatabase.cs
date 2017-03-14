@@ -29,6 +29,10 @@ namespace SalesApp.Core.Database
             return Task.FromResult(num);
         }
 
+        public Task<ObservableCollection<SalesTable>> GetAllSales()
+        {
+            return Task.FromResult<ObservableCollection<SalesTable>>(new ObservableCollection<SalesTable>(database.Table<SalesTable>().OrderByDescending(x => x.DateCreated).ToList()));
+        }
         public Task<IEnumerable<SalesTable>> GetAllSalesWhere(string salesmanId)
         {
             return Task.FromResult<IEnumerable<SalesTable>>(database.Table<SalesTable>().Where(x => x.SalesmanId == salesmanId).OrderByDescending(x => x.DateCreated).ToList());
@@ -109,5 +113,23 @@ namespace SalesApp.Core.Database
             database.Commit();
             return Task.FromResult(result);
         }
+
+        public Task<int> Update(SalesTable salesData)
+        {
+            var existingSales = database.Table<SalesTable>().Where(x => x.DocumentNo == salesData.DocumentNo).FirstOrDefault();
+            int num;
+            if (existingSales != null)
+            {
+                existingSales.Total = salesData.Total;
+                existingSales.TotalDiscountAmount = salesData.TotalDiscountAmount;
+                database.Update(existingSales);
+                num = 1;
+            }
+            else
+                num = 0;
+            database.Commit();
+            return Task.FromResult(num);
+        }
+
     }
 }

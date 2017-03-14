@@ -52,6 +52,23 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 local:MvxBind="Text Password" />
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10.0dp"
+                android:layout_marginLeft="25.0dp"
+                android:layout_marginRight="25.0dp"
+                android:textSize="16.0dp"
+                android:padding="8.0dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="number|numberDecimal"
+                android:digits="0123456789."
+                android:textColor="#000000"
+                android:textColorHint="#D3D3D3"
+                android:background="@drawable/custom_textbox"
+                android:hint="Server IP Address "
+                local:MvxBind="Text IpAddress" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"

@@ -2685,7 +2685,13 @@ containing a value of this type.
         public static final int abc_vector_test=0x7f020052;
         public static final int android_background=0x7f020053;
         public static final int avd_hide_password=0x7f020054;
+        public static final int avd_hide_password_1=0x7f02007b;
+        public static final int avd_hide_password_2=0x7f02007c;
+        public static final int avd_hide_password_3=0x7f02007d;
         public static final int avd_show_password=0x7f020055;
+        public static final int avd_show_password_1=0x7f02007e;
+        public static final int avd_show_password_2=0x7f02007f;
+        public static final int avd_show_password_3=0x7f020080;
         public static final int custom_button=0x7f020056;
         public static final int custom_clickable_item=0x7f020057;
         public static final int custom_textbox=0x7f020058;

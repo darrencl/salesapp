@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using SalesApp.Core.Services;
 using System.Collections.ObjectModel;
+using Android.Content;
+using Android.App;
 
 namespace SalesApp.Core.ViewModels
 {
@@ -16,6 +18,8 @@ namespace SalesApp.Core.ViewModels
         private readonly IDialogService dialog;
         private ISalesDatabase salesDb;
         private ISalesLineDatabase salesLineDb;
+        private ICustomerDatabase customerDb;
+        private IItemDatabase itemDb;
         private string username;
         public string Username
         {
@@ -28,13 +32,18 @@ namespace SalesApp.Core.ViewModels
             get { return password; }
             set { password = value; RaisePropertyChanged(() => Password); }
         }
+        public string IpAddress
+        {
+            get { return ServerDatabaseApi.myip; }
+            set { ServerDatabaseApi.myip = value; RaisePropertyChanged(() => IpAddress); }
+        }
         public IMvxCommand Login
         {
             get
             {
                 return new MvxCommand<LoginViewModel>((selected) =>
                 {
-                    if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
+                    if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(IpAddress))
                         funcLogin(Username, Password);
                     else
                         dialog.Show("Please fill both username and password", "Login failed");
@@ -42,11 +51,13 @@ namespace SalesApp.Core.ViewModels
             }
         }
         
-        public LoginViewModel(IDialogService ids, ISalesDatabase isd, ISalesLineDatabase isld)
+        public LoginViewModel(IDialogService ids, ISalesDatabase isd, ISalesLineDatabase isld, ICustomerDatabase icd, IItemDatabase iid)
         {
             this.dialog = ids;
             salesDb = isd;
             salesLineDb = isld;
+            customerDb = icd;
+            itemDb = iid;
         }
 
         /* Function: funcLogin
@@ -57,22 +68,53 @@ namespace SalesApp.Core.ViewModels
          */
         private async void funcLogin(string username, string password)
         {
-            //integrate with server database to check username and password
-            var serverDb = new ServerDatabaseService();
-            int isLogged = await serverDb.checkLogin(username, password);
-            if (isLogged == 1)
+            if (username == "warehouse" && password == "warehouse")
             {
-                loggingIn();
+                var serverDb = new ServerDatabaseService();
+                try
+                {
+                    var deleteLocalSalesLines = await salesLineDb.DeleteAll();
+                    var deleteLocalSales = await salesDb.DeleteAll();
+                    var deleteLocalCustomer = await customerDb.DeleteAll();
+                    var deleteLocalItem = await itemDb.DeleteAll();
+
+                    var allSales = await serverDb.getAllSales();
+                    var allSalesLines = await serverDb.getAllSalesLines();
+                    var allCustomer = await serverDb.getAllCustomers();
+                    var allItem = await serverDb.getAllItems();
+
+                    await salesDb.InsertAllSales(allSales);
+                    await salesLineDb.InsertSalesLines(allSalesLines);
+                    await customerDb.InsertAllCustomers(allCustomer);
+                    await itemDb.InsertItems(allItem);
+                    //go to shipment view
+                    ShowViewModel<ShipmentViewModel>();
+                    Close(this);
+                }
+                catch (Exception e)
+                {
+                    await dialog.Show(e.Message, "Error");
+                }
             }
-            else if (isLogged == 0)
+            else
             {
-                //login fail, send notification to user
-                await dialog.Show("Username or password is incorrect. Please try again.", "Login Failed");
-            }
-            else if (isLogged == 3)
-            {
-                //network error
-                await dialog.Show("Please check your network and try again later", "Network Error");
+                //integrate with server database to check username and password
+                var serverDb = new ServerDatabaseService();
+                int isLogged = await serverDb.checkLogin(username, password);
+                if (isLogged == 1)
+                {
+                    loggingIn();
+                }
+                else if (isLogged == 0)
+                {
+                    //login fail, send notification to user
+                    await dialog.Show("Username or password is incorrect. Please try again.", "Login Failed");
+                }
+                else if (isLogged == 3)
+                {
+                    //network error
+                    await dialog.Show("Please check your network and try again later", "Network Error");
+                }
             }
         }
         public async void loggingIn()
@@ -85,16 +127,24 @@ namespace SalesApp.Core.ViewModels
                 if (tmp != null)
                 {
                     var mySales = await serverDb.getMySales(tmp.SalesmanId);
-                    if (mySales != null)
+                    ISharedPreferences mysettings = Application.Context.GetSharedPreferences("mysetting", FileCreationMode.Private);
+                    var myExistingSales = await salesDb.GetAllSalesWhere(tmp.SalesmanId);
+                    List<Models.SalesTable> mySalesToBeAdded;
+                    if (myExistingSales != null)
+                        mySalesToBeAdded = mySales.Except(myExistingSales.ToList()).ToList();
+                    else
+                        mySalesToBeAdded = new List<Models.SalesTable>();
+                    if (mySalesToBeAdded != null)
                     {
-                        await salesDb.InsertAllSales(mySales);
-                        await salesDb.UpdateAllTransferred();
+                        await salesDb.InsertAllSales(new ObservableCollection<Models.SalesTable>((mySalesToBeAdded.Select(x => { x.Transferred(); return x; })).ToList()));
                     }
+                    var listOfDocNo = mySalesToBeAdded.Select(x => x.DocumentNo).ToList();
                     var mySalesLines = await serverDb.getMySalesLines(tmp.SalesmanId);
-                    if (mySalesLines != null)
-                        await salesLineDb.InsertSalesLines(mySalesLines);
+                    var mySalesLinesToBeAdded = mySalesLines.Where(x => listOfDocNo.Contains(x.DocumentNo)).ToList();
+                    if (mySalesLinesToBeAdded != null)
+                        await salesLineDb.InsertSalesLines(new ObservableCollection<Models.SalesLineTable>(mySalesLinesToBeAdded));
                     GlobalVars.myDetail = new Models.Salesman(tmp.SalesmanId, tmp.Name, tmp.Address, tmp.Phone, tmp.Username);
-                    ShowViewModel<SalesViewModel>();
+                    ShowViewModel<PromotionViewModel>();
                     Close(this);
                 }
             }
@@ -106,7 +156,7 @@ namespace SalesApp.Core.ViewModels
         public async void goToSalesView()
         {
             await dialog.Show("Logged in as " + GlobalVars.myDetail.Name, "Login Succeess");
-            ShowViewModel<SalesViewModel>();
+            ShowViewModel<PromotionViewModel>();
             Close(this);
         }
     }

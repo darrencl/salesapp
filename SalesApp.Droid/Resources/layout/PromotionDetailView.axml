@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@drawable/headbar">
+        <Button
+            android:text="&lt;"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:textColor="@drawable/textbutton"
+            local:MvxBind="Click Back" />
+        <TextView
+            android:text="Promotion Detail"
+            android:textSize="22dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center" />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="11"
+        android:padding="0dp"
+        android:background="#ffffff">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="0dp"
+            android:background="#ffffff">
+            <MvxImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:layout_marginRight="10.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:padding="0dp"
+                local:MvxBind="ImageUrl ImageURL;" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Promotion Title"
+                android:textColor="#000000"
+                android:textSize="16.0dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_marginBottom="5.0dp"
+                local:MvxBind="Text PromotionTitle;" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8/3/2017 - 1/4/2017"
+                android:textColor="#000000"
+                android:textSize="12.0dp"
+                android:textStyle="italic"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_marginBottom="10.0dp"
+                local:MvxBind="Text Period;" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                android:textColor="#000000"
+                android:textSize="14.0dp"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_marginBottom="10.0dp"
+                local:MvxBind="Text PromotionDetailText;" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

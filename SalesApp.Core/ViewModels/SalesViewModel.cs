@@ -31,14 +31,46 @@ namespace SalesApp.Core.ViewModels
         {
             get { return new MvxCommand(() => { ShowViewModel<CustomerViewModel>(); Close(this); }); }
         }
+        public IMvxCommand navPromo
+        {
+            get { return new MvxCommand(() => { ShowViewModel<PromotionViewModel>(); Close(this); }); }
+        }
         public IMvxCommand ItemDetailCommand
         {
-            get { return new MvxCommand<Sales>((selectedSales) => funcShowDetail(selectedSales)); }
+            get { return new MvxCommand<Sales>(async (selectedSales) =>
+            {
+                if (selectedSales.isTransferred)
+                    funcShowDetail(selectedSales);
+                else
+                {
+                    if (await dialog.Show("Do you want to update or view the Sales with document number " + selectedSales.DocumentNo + "?", "Update or View", "Update", "View"))
+                    {
+                        //go to update view
+                        funcUpdateSales(selectedSales);
+                    }
+                    else
+                    {
+                        funcShowDetail(selectedSales);
+                    }
+                }
+            }); }
         }
-        /*public IMvxCommand DeleteCommand
+        public IMvxCommand DeleteCommand
         {
-            get { return new MvxCommand<Sales>((selected) => funcDeleteSalesItem(selected)); }
-        }*/
+            get { return new MvxCommand<Sales>(async (selected) => 
+            {
+                if (!selected.isTransferred)
+                {
+                    //able to delete
+                    if (await dialog.Show("Are you sure you want to delete the sales under the name of " + selected.CustomerName + " on " + selected.DateCreated + "?", "Delete Sales", "Yes", "No"))
+                    {
+                        await salesLineDb.DeleteSalesLineWhere(selected.DocumentNo);
+                        await salesDb.DeleteSales(new SalesTable(selected.DocumentNo,selected.DateCreated, selected.Location, selected.Latitude, selected.Longitude, selected.TotalDiscountAmount, selected.Total, GlobalVars.myDetail.SalesmanId, selected.CustomerId,selected.isGPSEnabled));
+                        await loadSales();
+                    }
+                }
+            }); }
+        }
 
         public async Task CmdSync()
         {
@@ -62,7 +94,11 @@ namespace SalesApp.Core.ViewModels
                 {
                     if (await dialog.Show("Are you sure you want to logout?", "Logout", "Yes", "No"))
                     {
+                        GlobalVars.isLoggedOut = true;
+                        var mySales = await salesDb.GetAllSalesWhere(GlobalVars.myDetail.SalesmanId);
+                        DateTime timeNow = DateTime.Now;
                         ISharedPreferences mysettings = Application.Context.GetSharedPreferences("mysetting", FileCreationMode.Private);
+                        List<SalesTable> mySalesToList = mySales.ToList().Where(x => ((timeNow.Year - x.DateCreated.Year) * 12 + timeNow.Month - x.DateCreated.Month) > mysettings.GetInt("deleteOffset", 6)).ToList();
                         ISharedPreferencesEditor editor = mysettings.Edit();
                         editor.PutBoolean("isLoggedIn", false);
                         editor.Remove("id");
@@ -71,8 +107,13 @@ namespace SalesApp.Core.ViewModels
                         editor.Remove("phone");
                         editor.Remove("username");
                         editor.Apply();
-                        await salesLineDb.DeleteAll();
-                        await salesDb.DeleteAll();
+                        foreach (SalesTable data in mySalesToList)
+                        {
+                            await salesLineDb.DeleteSalesLineWhere(data.DocumentNo);
+                            await salesDb.DeleteSales(data);
+                        }
+                        //await salesLineDb.DeleteAll();
+                        //await salesDb.DeleteAll();
                         GlobalVars.myDetail = null;
                         ShowViewModel<LoginViewModel>();
                         Close(this);
@@ -96,23 +137,31 @@ namespace SalesApp.Core.ViewModels
         /* Function: loadSales
          * This function load sales from local database to the local variable (i.e. SalesList) that is binded to the MvxListView
          */
-        public async void loadSales()
+        public async Task loadSales()
         {
             ObservableCollection<Sales> salestmp = new ObservableCollection<Sales>();
             if (!string.IsNullOrEmpty(GlobalVars.myDetail.SalesmanId))
             {
                 var mySales = await salesDb.GetAllSalesWhere(GlobalVars.myDetail.SalesmanId);
-                var tmp = mySales.OrderByDescending(s => s.DateCreated);
+                var tmp = mySales.OrderByDescending(s => s.DateCreated).ToList();
                 var customertmp = new Models.Customer();
-                var countCustomer = await customerDb.Count();
-                if (countCustomer == 0)
-                    await downloadCustomers();
+                //var countCustomer = await customerDb.Count();
+                //if (countCustomer == 0)
+                if (CrossConnectivity.Current.IsConnected)
+                {
+                    if (await CrossConnectivity.Current.IsRemoteReachable(ServerDatabaseApi.ipAddress, int.Parse(ServerDatabaseApi.port)))
+                    {
+                        await downloadCustomers();
+                        
+                    }
+                }
                 foreach (SalesTable s in tmp)
                 {
                     customertmp = await customerDb.GetCustomerWhere(s.CustomerId);
-                    salestmp.Add(new Sales(s.DocumentNo, s.DateCreated, s.Location, s.TotalDiscountAmount, s.Total, s.CustomerId, customertmp.Name));
+                    salestmp.Add(new Sales(s.DocumentNo, s.DateCreated, s.Location, s.TotalDiscountAmount, s.Total, s.CustomerId, customertmp.Name, customertmp.Address, s.isTransferred, s.isGPSEnabled));
                 }
                 SalesList = salestmp;
+                RaisePropertyChanged(() => SalesList);
                 GlobalVars.salesListIsLoaded = true;
             }
         }
@@ -123,7 +172,31 @@ namespace SalesApp.Core.ViewModels
             var fetchedCustomers = await serverDb.getAllCustomers();
             if (fetchedCustomers != null)
             {
-                var insertCustomers = customerDb.InsertAllCustomers(fetchedCustomers);
+                var countCustomer = await customerDb.Count();
+                int insertCustomers;
+                if (countCustomer == 0)
+                    insertCustomers = await customerDb.InsertAllCustomers(fetchedCustomers);
+                else
+                {
+                    //compare against local
+                    var localCustomers = await customerDb.GetAllCustomers();
+                    List<Models.Customer> fetchedData = new List<Models.Customer>(fetchedCustomers);
+                    List<Models.Customer> newData = fetchedData.Except<Models.Customer>(localCustomers).ToList();
+                    List<Models.Customer> deletedData = localCustomers.Except<Models.Customer>(fetchedData).ToList();
+                    if (newData != null)
+                    {
+                        //insert new data to local db
+                        insertCustomers = await customerDb.InsertAllCustomers(new ObservableCollection<Models.Customer>(newData));
+                    }
+                    if (deletedData != null)
+                    {
+                        //delete deleted data in local db
+                        foreach (Models.Customer data in deletedData)
+                        {
+                            await customerDb.DeleteCustomer(data);
+                        }
+                    }
+                }
             }
         }
         public async Task syncSales()
@@ -143,6 +216,7 @@ namespace SalesApp.Core.ViewModels
                         if (sltresult == 1)
                         {
                             var updateresult = await salesDb.UpdateTransferred(x.DocumentNo);
+                            x.Transferred();
                         }
 
                         else if (sltresult == 0)
@@ -176,9 +250,7 @@ namespace SalesApp.Core.ViewModels
                                 await salesLineDb.DeleteSalesLineWhere(deletedSales.DocumentNo);
                                 await salesDb.DeleteSales(deletedSales);
                             }
-                            loadSales();
                         }
-
                         catch (System.Exception e)
                         {
                             await dialog.Show(e.Message, "Delete Failed");
@@ -186,6 +258,7 @@ namespace SalesApp.Core.ViewModels
                     }
                 }
             }
+            await loadSales();
         }
         /* Function: funcAddSales
          * This function calls the add sales screen
@@ -202,18 +275,11 @@ namespace SalesApp.Core.ViewModels
             GlobalVars.selectedSales = selected;
             ShowViewModel<SalesDetailViewModel>();
         }
-        /*public async void funcDeleteSalesItem(Sales selected)
+        public void funcUpdateSales(Sales selected)
         {
-            if (await dialog.Show("Are you sure you want to delete the sales under the name of " + selected.CustomerName + " on " + selected.DateCreated + "?", "Delete Sales", "Yes", "No"))
-            {
-                //check if delete on database success
-                await salesDb.DeleteSales(new SalesTable(selected.DocumentNo, selected.DateCreated, selected.Location, selected.Latitude, selected.Longitude,
-                    selected.TotalDiscountAmount, selected.Total, GlobalVars.myDetail.SalesmanId, selected.CustomerId));
-                await salesLineDb.DeleteSalesLines(selected.DocumentNo);
-                SalesList.Remove(selected);
-                RaisePropertyChanged(() => SalesList);
-            }
-        }*/
+            GlobalVars.selectedSales = selected;
+            ShowViewModel<SalesUpdateViewModel>();
+        }
 
         public void refresh()
         {

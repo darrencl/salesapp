@@ -48,6 +48,7 @@ namespace SalesApp.Droid
             Mvx.LazyConstructAndRegisterSingleton<ISalesLineDatabase, SalesLineDatabase>();
             Mvx.LazyConstructAndRegisterSingleton<IItemDatabase, ItemDatabase>();
             Mvx.LazyConstructAndRegisterSingleton<ISQLite, SqliteDroid>();
+            Mvx.LazyConstructAndRegisterSingleton<IPromotionDatabase, PromotionDatabase>();
             base.InitializeFirstChance();
         }
     }

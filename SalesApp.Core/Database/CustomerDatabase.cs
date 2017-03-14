@@ -55,5 +55,12 @@ namespace SalesApp.Core.Database
         {
             return Task.FromResult(database.Table<Customer>().ToList().Count());
         }
+
+        public Task<int> DeleteAll()
+        {
+            var num = database.DeleteAll<Customer>();
+            database.Commit();
+            return Task.FromResult(num);
+        }
     }
 }

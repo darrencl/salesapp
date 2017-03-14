@@ -57,9 +57,47 @@
         android:layout_marginBottom="10.0dp"
         android:layout_marginTop="10.0dp"
         android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:textSize="10.0dp"
+            android:text="Qty"
+            android:gravity="right"
+            android:textColor="#A9A9A9"
+            android:layout_marginBottom="2.0dp" />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16.0dp"
+            android:text="5"
+            android:textColor="#000000"
+            android:gravity="right"
+            android:layout_gravity="right|center_vertical"
+            local:MvxBind="Text Quantity;" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10.0dp"
+        android:layout_marginTop="10.0dp"
+        android:layout_width="0dp"
         android:layout_weight="20"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:textSize="10.0dp"
+            android:text="Disc"
+            android:gravity="right"
+            android:textColor="#A9A9A9"
+            android:layout_marginBottom="2.0dp" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_height="wrap_content"
@@ -72,7 +110,7 @@
                 android:textSize="10.0dp"
                 android:text="0"
                 android:textColor="#FA8072"
-                local:MvxBind="Text DiscountPercentage;" />
+                local:MvxBind="Text DiscountPercentageDisplay;" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,16 +127,6 @@
             android:textColor="#FF0000"
             local:MvxBind="Text DiscountAmountString;" />
     </LinearLayout>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="10"
-        android:textSize="16.0dp"
-        android:text="5"
-        android:textColor="#000000"
-        android:gravity="right"
-        android:layout_gravity="right|center_vertical"
-        local:MvxBind="Text Quantity;" />
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="0dp"

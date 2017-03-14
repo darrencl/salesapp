@@ -46,8 +46,8 @@
             android:layout_marginRight="60.0dp"
             android:background="@android:color/transparent"
             android:src="@drawable/refresh_button"
-            android:layout_alignParentRight="true"/>
-            <!--local:MvxBind="Click SyncCommand" /> -->
+            android:layout_alignParentRight="true" />
+    <!--local:MvxBind="Click SyncCommand" /> -->
         <Button
             android:layout_weight="1"
             android:text="+"
@@ -83,6 +83,16 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:background="@drawable/navbar">
+      <ImageView
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:id="@+id/btnPromotion"
+          android:layout_weight="1"
+          android:src="@drawable/Promotion"
+          android:background="#80ffffff"
+          android:paddingTop="2dp"
+          android:paddingBottom="2dp"
+          local:MvxBind="Click navPromo"/>
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

@@ -70,6 +70,7 @@ namespace SalesApp.Droid.Views
             editor.PutString("phone", mydetail.Phone);
             editor.PutString("username", mydetail.Username);
             editor.PutBoolean("isLoggedIn", true);
+            editor.PutInt("deleteOffset", 6);
             editor.Apply();
         }
     }

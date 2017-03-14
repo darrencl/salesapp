@@ -33,8 +33,9 @@ namespace SalesApp.Droid
 
         public void Include(TextView text)
         {
-            text.TextChanged += (sender, args) => text.Text = "" + text.Text;
+            text.AfterTextChanged += (sender, args) => text.Text = "" + text.Text;
             text.Hint = "" + text.Hint;
+            text.Click += (s, e) => text.Text = text.Text + "";
         }
         
         public void Include(CheckedTextView text)
